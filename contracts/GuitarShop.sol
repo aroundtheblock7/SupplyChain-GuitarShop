@@ -3,7 +3,7 @@ pragma solidity 0.8.6;
 
 import "./SafeMath.sol";
 
-contract LemonadeStand {
+contract GuitarShop {
     using SafeMath for uint256;
 
     address payable owner;
