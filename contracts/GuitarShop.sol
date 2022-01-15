@@ -77,6 +77,14 @@ contract GuitarShop {
         _;
     }
 
+    modifier checkValue(uint256 _sku) {
+        _;
+        uint256 _price = items[_sku].price;
+        uint256 amountToRefund = msg.value - _price;
+        (bool success, ) = items[_sku].buyer.call{value: amountToRefund}("");
+        require(success, "Transfer failed");
+    }
+
     //note sku = skuCount in Item struct properties
     function addItem(uint256 _price, string memory _name) public onlyOwner {
         skuCount = skuCount.add(1);
@@ -95,6 +103,7 @@ contract GuitarShop {
         public
         payable
         forSale(sku)
+        checkValue(sku)
         paidEnough(items[sku].price)
     {
         address buyer = msg.sender;
